@@ -25,3 +25,4 @@ test_sql_logic:
 
 include:
   - template: Security/Secret-Detection.gitlab-ci.yml
+  
