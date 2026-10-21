@@ -1,0 +1,26 @@
+stages:
+  - verify
+  - secure
+
+variables:
+  POSTGRES_DB: ifrs9_db
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: postgres_pass
+  POSTGRES_HOST: postgres
+
+test_sql_logic:
+  stage: verify
+  image: python:3.11-slim
+  services:
+    - postgres:15-alpine
+  before_script:
+    - apt-get update && apt-get install -y postgresql-client
+    - pip install pytest psycopg2-binary
+    - export PGPASSWORD=$POSTGRES_PASSWORD
+    - until pg_isready -h $POSTGRES_HOST -U $POSTGRES_USER; do sleep 1; done
+    - psql -h $POSTGRES_HOST -U $POSTGRES_USER -d $POSTGRES_DB -f sql/01_schema_and_views.sql
+  script:
+    - pytest tests/test_ifrs9_pipeline.py
+
+include:
+  - template: Security/Secret-Detection.gitlab-ci.yml
