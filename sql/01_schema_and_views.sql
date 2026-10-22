@@ -119,7 +119,7 @@ WITH latest_portfolio AS (
 		END AS risk_bucket,
 		SUM(bill_amount) AS ead,
 		CASE
-			WHEN delay_status <= 0 THEN 0.0000
+			WHEN delay_status <= 0 THEN 1.5000
 			WHEN delay_status = 1 THEN 0.0000
 			WHEN delay_status = 2 THEN 0.0505
 			WHEN delay_status >= 3 THEN 0.6434
