@@ -19,7 +19,7 @@ test_sql_logic:
     - pip install pytest psycopg2-binary
     - export PGPASSWORD=$POSTGRES_PASSWORD
     - until pg_isready -h $POSTGRES_HOST -U $POSTGRES_USER; do sleep 1; done
-    - psql -h $POSTGRES_HOST -U $POSTGRES_USER -d $POSTGRES_DB -f sql/01_schema_and_views.sql
+    - psql -v ON_ERROR_STOP=1 -h $POSTGRES_HOST -U $POSTGRES_USER -d $POSTGRES_DB -f sql/01_schema_and_views.sql
   script:
     - pytest tests/test_ifrs9_pipeline.py
 
